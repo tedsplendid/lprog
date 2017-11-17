@@ -85,11 +85,9 @@ int main(int argc, char *argv[]) {
         printf("Read %ld bytes from inotify fd\n", (long) numRead);
 
         /* Process all of the events in buffer returned by read() */
-        for (p = buf; p < buf + numRead; ) {
+        for (p = buf; p < buf + numRead; p += sizeof(struct inotify_event) + event->len) {
             event = (struct inotify_event *) p;
             displayInotifyEvent(event);
-
-            p += sizeof(struct inotify_event) + event->len;
         }
     }
 
